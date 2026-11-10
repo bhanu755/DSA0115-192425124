@@ -1,0 +1,36 @@
+Built-in checks
+---------------
+Compile the program and run `./metro_fare_system --test`. The checks cover:
+- normal adult fare and the 3-zone fare table
+- peak surcharge and student/senior concessions
+- a journey leaving exactly Rs.50.00 and rejection below that threshold
+- both inclusive peak starts and exclusive peak ends
+- invalid time, zone, and money inputs
+- exact paise parsing
+
+Interactive examples
+--------------------
+Enter each value on the corresponding prompt, in order: balance, passenger type,
+origin zone, destination zone, departure time.
+
+1. Normal journey: 100.00, adult, 1, 2, 10:00
+   Expected: fare Rs.30.00; approved; remaining Rs.70.00.
+2. Peak journey: 100.00, adult, 1, 3, 07:00
+   Expected: fare Rs.50.00; approved; remaining Rs.50.00.
+3. Student peak journey: 100.00, student, 1, 1, 17:00
+   Expected: fare Rs.15.00 after 50% concession; approved.
+4. Minimum-balance rejection: 70.00, adult, 1, 2, 10:00
+   Expected: declined; balance remains Rs.70.00 because the fare would leave Rs.40.00.
+5. Invalid zone: 100.00, adult, 4
+   Expected: invalid zone message; journey is not processed.
+6. Invalid time: 100.00, adult, 1, 2, 24:00
+   Expected: invalid time message; journey is not processed.
+7. Invalid money: enter 12.345 for the balance
+   Expected: invalid balance message; only up to 2 decimal places are accepted.
+
+Peak-time boundary matrix
+-------------------------
+06:59 -> no surcharge    07:00 -> surcharge
+09:59 -> surcharge       10:00 -> no surcharge
+16:59 -> no surcharge    17:00 -> surcharge
+19:59 -> surcharge       20:00 -> no surcharge
